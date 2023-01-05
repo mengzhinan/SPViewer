@@ -10,6 +10,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        SPDataHelper.putKeyValue(this, "aaa", "a1", "11", String)
+        SPDataHelper.putKeyValue(this, "aaa", "a1", "22", String)
+        SPDataHelper.putKeyValue(this, "aaa", "a3", "33", Float)
+        SPDataHelper.putKeyValue(this, "bbb.xml", "bb1", "bba", String)
+        SPDataHelper.putKeyValue(this, "bbb.xml", "bb2", "95", Int)
+        SPDataHelper.putKeyValue(this, "bbb.xml", "bb3", "false", Boolean)
 
         startActivity(Intent(this, FileNameListActivity::class.java))
 
