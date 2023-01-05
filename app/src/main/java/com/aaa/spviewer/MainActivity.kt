@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
 
         startActivity(Intent(this, FileNameListActivity::class.java))
+        finish()
 
     }
 }
