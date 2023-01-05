@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,13 @@ class FileNameListActivity : AppCompatActivity() {
     private var rvFileName: RecyclerView? = null
     private var fileNameAdapter: FileNameAdapter? = null
 
+    private val noDataInterface = object : FileNameAdapter.NoDataInterface {
+        override fun hasData(hasData: Boolean) {
+            tvNoData?.visibility = if (hasData) View.GONE else View.VISIBLE
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
@@ -33,12 +41,8 @@ class FileNameListActivity : AppCompatActivity() {
         rvFileName?.adapter = fileNameAdapter
         rvFileName?.layoutManager = LinearLayoutManager(this)
         fileNameAdapter?.setData(
-            SPDataHelper.getSPFileNameItems(this),
-            object : FileNameAdapter.NoDataInterface {
-                override fun hasData(hasData: Boolean) {
-                    tvNoData?.visibility = if (hasData) View.GONE else View.VISIBLE
-                }
-            })
+            SPDataHelper.getSPFileNameItems(this), noDataInterface
+        )
 
         fileNameAdapter?.setOnClick(object : FileNameAdapter.OnClickInterface {
             override fun onClick(fileNameItem: FileNameItem) {
@@ -54,13 +58,31 @@ class FileNameListActivity : AppCompatActivity() {
         fileNameAdapter?.setOnLongClick(object : FileNameAdapter.OnLongClickInterface {
             @SuppressLint("NotifyDataSetChanged")
             override fun onLongClick(fileNameItem: FileNameItem) {
-                val isSuccess =
-                    SPDataHelper.deleteSPFile(this@FileNameListActivity, fileNameItem.fileName)
-                val msg = if (isSuccess) "删除成功" else "删除失败"
-                Toast.makeText(this@FileNameListActivity, msg, Toast.LENGTH_SHORT).show()
-                fileNameAdapter?.notifyDataSetChanged()
+
+                AlertDialog.Builder(this@FileNameListActivity)
+                    .setTitle("确认")
+                    .setMessage("确认要删除文件 ${fileNameItem.fileName} 吗？")
+                    .setNeutralButton(
+                        "确认"
+                    ) { dialog, _ ->
+                        val isSuccess =
+                            SPDataHelper.deleteSPFile(
+                                this@FileNameListActivity,
+                                fileNameItem.fileName
+                            )
+                        val msg = if (isSuccess) "删除成功" else "删除失败"
+                        Toast.makeText(this@FileNameListActivity, msg, Toast.LENGTH_SHORT)
+                            .show()
+                        dialog?.dismiss()
+                        fileNameAdapter?.remove(fileNameItem, noDataInterface)
+                    }
+                    .setPositiveButton(
+                        "取消"
+                    ) { dialog, _ -> dialog?.dismiss() }.show()
             }
         })
 
     }
+
+
 }

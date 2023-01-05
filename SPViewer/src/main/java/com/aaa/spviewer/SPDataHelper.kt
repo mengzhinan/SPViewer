@@ -16,18 +16,34 @@ object SPDataHelper {
     private const val SHARED_PREFS = "shared_prefs"
     private const val FILE_SUFFIX = ".xml"
 
-    fun <T> putKeyValue(
-        context: Context?, fileNameNoSuffix: String?, key: String, value: Any, t: T
+    fun putBoolean(
+        context: Context?, fileNameNoSuffix: String?, key: String, b: Boolean
     ) {
-        val sharedEditor: SharedPreferences.Editor? =
-            getSharedPreferences(context, fileNameNoSuffix)?.edit()
-        when (t) {
-            is Boolean -> sharedEditor?.putBoolean(key, value as Boolean)?.apply()
-            is Float -> sharedEditor?.putFloat(key, value as Float)?.apply()
-            is Int -> sharedEditor?.putInt(key, value as Int)?.apply()
-            is Long -> sharedEditor?.putLong(key, value as Long)?.apply()
-            is String -> sharedEditor?.putString(key, value as String)?.apply()
-        }
+        getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putBoolean(key, b)?.apply()
+    }
+
+    fun putFloat(
+        context: Context?, fileNameNoSuffix: String?, key: String, f: Float
+    ) {
+        getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putFloat(key, f)?.apply()
+    }
+
+    fun putInt(
+        context: Context?, fileNameNoSuffix: String?, key: String, i: Int
+    ) {
+        getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putInt(key, i)?.apply()
+    }
+
+    fun putLong(
+        context: Context?, fileNameNoSuffix: String?, key: String, l: Long
+    ) {
+        getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putLong(key, l)?.apply()
+    }
+
+    fun putString(
+        context: Context?, fileNameNoSuffix: String?, key: String, s: String
+    ) {
+        getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putString(key, s)?.apply()
     }
 
     fun removeKey(context: Context?, fileNameNoSuffix: String?, key: String) {

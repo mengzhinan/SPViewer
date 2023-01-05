@@ -35,6 +35,13 @@ class FileNameAdapter : RecyclerView.Adapter<FileNameViewHolder>() {
         callback?.hasData(list.size > 0)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun remove(item: FileNameItem, callback: NoDataInterface?) {
+        list.remove(item)
+        notifyDataSetChanged()
+        callback?.hasData(list.size > 0)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileNameViewHolder {
         return FileNameViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_file_name, parent, false)
