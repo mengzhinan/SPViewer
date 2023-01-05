@@ -2,6 +2,7 @@ package com.aaa.spviewer
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.aaa.spviewer.model.FileNameItem
 import java.io.File
 
 /**
@@ -30,6 +31,9 @@ object SPDataHelper {
         return context.getSharedPreferences(name, Context.MODE_PRIVATE)
     }
 
+    /**
+     * 获取 sp 文件所在的目录文件对象
+     */
     fun getSPFolder(context: Context?): File? {
         // 获取 sp 所在父目录：/data/data/packageName/
         val pFile = context?.filesDir?.parentFile
@@ -51,7 +55,7 @@ object SPDataHelper {
     }
 
     /**
-     * 获取 shared_prefs 目录下所有的 sp 文件名称
+     * 获取 shared_prefs 目录下所有的 sp 文件名称 list
      * @param context context
      * @param isNeedSuffix 是否需要携带文件名后缀
      */
@@ -80,6 +84,25 @@ object SPDataHelper {
             nameList.add(fName)
         }
         return nameList
+    }
+
+    fun getFileNameItems(context: Context?):MutableList<FileNameItem>{
+        val resultList = mutableListOf<FileNameItem>()
+        val fileNameList = getSPFileNames(context, true)
+        if (fileNameList.size == 0){
+            return resultList
+        }
+        val folder = getSPFolder(context)
+        if (folder?.exists() == false){
+            return resultList
+        }
+        for (n:String in fileNameList){
+            val item = FileNameItem()
+            item.fileName = n
+            val lFile = File(folder, n)
+            item.fileSize = "${lFile?.length()?:0}"
+        }
+
     }
 
 }
