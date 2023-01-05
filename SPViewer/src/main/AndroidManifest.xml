@@ -3,21 +3,21 @@
 
     <application>
         <activity
-            android:name=".KeyValueActivity"
+            android:name=".activity.KeyValueActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".FileContentActivity"
+            android:name=".activity.FileContentActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".FileNameListActivity"
+            android:name=".activity.FileNameListActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
