@@ -8,25 +8,43 @@ package com.aaa.spviewer
  */
 object FileSizeUtil {
 
-    fun formatFileSize(s: Long): String {
-        var result = ""
-        if (s < 0) {
-            result = "unknown"
-        } else if (s < 1024) {
-            result = "$s Bytes"
-        } else if (s < 1024 * 1024) {
-            result = "${s * 1.0 / 1024} KB"
-        } else if (s < 1024 * 1024 * 1024) {
-            result = "${s * 1.0 / 1024 / 1024} MB"
-        } else if (s < 1024 * 1024 * 1024 * 1024) {
-            result = "${s * 1.0 / 1024 / 1024 / 1024} GB"
-        } else if (s < 1024 * 1024 * 1024 * 1024 * 1024) {
-            result = "${s * 1.0 / 1024 / 1024 / 1024 / 1024} TB"
-        } else {
-            // 无穷大
-            result = "Infinity"
+    /**
+     * 格式化文件大小
+     */
+    fun formatFileSize(s: Long?): String {
+        if (s == null) {
+            return "unknown"
         }
-        return result
+        var tempS = s * 1.0F
+        if (s < 0) {
+            return "unknown"
+        }
+
+        if (tempS < 1024) {
+            return "$tempS Bytes"
+        }
+
+        tempS /= 1024
+        if (tempS < 1024) {
+            return "$tempS KB"
+        }
+
+        tempS /= 1024
+        if (tempS < 1024) {
+            return "$tempS MB"
+        }
+
+        tempS /= 1024
+        if (tempS < 1024) {
+            return "$tempS GB"
+        }
+
+        tempS /= 1024
+        if (tempS < 1024) {
+            return "$tempS TB"
+        }
+        // 无穷大
+        return "Infinity"
     }
 
 }

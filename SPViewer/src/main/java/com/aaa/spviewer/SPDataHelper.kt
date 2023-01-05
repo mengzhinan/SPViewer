@@ -16,6 +16,24 @@ object SPDataHelper {
     private const val SHARED_PREFS = "shared_prefs"
     private const val FILE_SUFFIX = ".xml"
 
+    fun <T> putKeyValue(
+        context: Context?, fileNameNoSuffix: String?, key: String, value: Any, t: T
+    ) {
+        val sharedEditor: SharedPreferences.Editor? =
+            getSharedPreferences(context, fileNameNoSuffix)?.edit()
+        when (t) {
+            is Boolean -> sharedEditor?.putBoolean(key, value as Boolean)?.apply()
+            is Float -> sharedEditor?.putFloat(key, value as Float)?.apply()
+            is Int -> sharedEditor?.putInt(key, value as Int)?.apply()
+            is Long -> sharedEditor?.putLong(key, value as Long)?.apply()
+            is String -> sharedEditor?.putString(key, value as String)?.apply()
+        }
+    }
+
+    fun removeKey(context: Context?, fileNameNoSuffix: String?, key: String) {
+        getSharedPreferences(context, fileNameNoSuffix)?.edit()?.remove(key)?.apply()
+    }
+
 //    @Deprecated(
 //        "过时方法",
 //        ReplaceWith(
@@ -27,8 +45,8 @@ object SPDataHelper {
 //        return PreferenceManager.getDefaultSharedPreferences(context)
 //    }
 
-    fun getSharedPreferences(context: Context, name: String): SharedPreferences {
-        return context.getSharedPreferences(name, Context.MODE_PRIVATE)
+    fun getSharedPreferences(context: Context?, fileNameNoSuffix: String?): SharedPreferences? {
+        return context?.getSharedPreferences(fileNameNoSuffix, Context.MODE_PRIVATE)
     }
 
     /**
@@ -55,17 +73,16 @@ object SPDataHelper {
     }
 
     /**
-     * 获取 shared_prefs 目录下所有的 sp 文件名称 list
+     * 获取 shared_prefs 目录下所有的 sp 文件名称 list，不包含文件名后缀
      * @param context context
-     * @param isNeedSuffix 是否需要携带文件名后缀
      */
-    fun getSPFileNames(context: Context?, isNeedSuffix: Boolean = true): MutableList<String> {
-        val nameList = mutableListOf<String>()
+    fun getSPFileNameItems(context: Context?): MutableList<FileNameItem> {
+        val resultList = mutableListOf<FileNameItem>()
         // 获取 sp 所在目录：/data/data/packageName/shared_prefs
         val targetFolder = getSPFolder(context)
         val fList = targetFolder?.listFiles()
         if (fList == null || fList.isEmpty()) {
-            return nameList
+            return resultList
         }
         for (f: File in fList) {
             if (!f.exists()) {
@@ -73,7 +90,7 @@ object SPDataHelper {
             }
             var fName: String = f.name ?: continue
             fName = fName.trim()
-            if (!isNeedSuffix && fName.endsWith(FILE_SUFFIX, true)) {
+            if (fName.endsWith(FILE_SUFFIX, true)) {
                 // 不能用 replace，可能文件名中间也包含相同字符串
                 // 如：com.xxx.spviewer_preferences.xml.xml
                 fName = fName.substring(0, fName.length - FILE_SUFFIX.length)
@@ -81,28 +98,26 @@ object SPDataHelper {
             if (fName.isEmpty()) {
                 continue
             }
-            nameList.add(fName)
+            val item = FileNameItem()
+            item.fileName = fName
+            val lFile = File(targetFolder, fName + FILE_SUFFIX)
+            item.fileSize = FileSizeUtil.formatFileSize(lFile.length())
+            resultList.add(item)
         }
-        return nameList
+        return resultList
     }
 
-    fun getFileNameItems(context: Context?):MutableList<FileNameItem>{
-        val resultList = mutableListOf<FileNameItem>()
-        val fileNameList = getSPFileNames(context, true)
-        if (fileNameList.size == 0){
-            return resultList
+    /**
+     * 删除 sp 文件
+     */
+    fun deleteSPFile(context: Context?, fileNameNoSuffix: String?): Boolean {
+        val folder = getSPFolder(context) ?: return false
+        val targetFile = File(folder, fileNameNoSuffix + FILE_SUFFIX)
+        if (!targetFile.exists()) {
+            return false
         }
-        val folder = getSPFolder(context)
-        if (folder?.exists() == false){
-            return resultList
-        }
-        for (n:String in fileNameList){
-            val item = FileNameItem()
-            item.fileName = n
-            val lFile = File(folder, n)
-            item.fileSize = "${lFile?.length()?:0}"
-        }
-
+        targetFile.delete()
+        return true
     }
 
 }
