@@ -1,9 +1,9 @@
-package com.zhihu.spviewer
+package com.aaa.spviewer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.aaa.spviewer.SPDataHelper
+import com.zhihu.spviewer.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

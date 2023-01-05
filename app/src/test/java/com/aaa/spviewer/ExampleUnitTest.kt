@@ -1,4 +1,4 @@
-package com.zhihu.spviewer
+package com.aaa.spviewer
 
 import org.junit.Test
 
