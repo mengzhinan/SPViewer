@@ -14,8 +14,10 @@ class FileContentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_content)
+        setContentView(R.layout.activity_file_content)
 
         fileNameNoSuffix = intent?.getStringExtra(PARAM_FILE_NAME_NO_SUFFIX)
+        supportActionBar?.title = "$fileNameNoSuffix 文件内容"
+
     }
 }

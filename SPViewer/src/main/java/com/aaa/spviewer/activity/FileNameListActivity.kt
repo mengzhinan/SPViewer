@@ -30,7 +30,7 @@ class FileNameListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
+        setContentView(R.layout.activity_file_list)
         supportActionBar?.title = "SP 文件列表"
 
         tvNoData = findViewById(R.id.tv_no_data)
