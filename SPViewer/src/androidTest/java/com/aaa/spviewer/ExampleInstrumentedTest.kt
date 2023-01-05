@@ -1,4 +1,4 @@
-package com.zhihu.spviewer
+package com.aaa.spviewer
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
