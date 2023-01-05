@@ -36,20 +36,21 @@ class FileNameListActivity : AppCompatActivity() {
         tvNoData = findViewById(R.id.tv_no_data)
         rvFileName = findViewById(R.id.rv_file_name)
 
+        tvNoData?.setOnClickListener {
+            fileNameAdapter?.setData(
+                SPDataHelper.getSPFileNameItems(this), noDataInterface
+            )
+        }
 
         fileNameAdapter = FileNameAdapter()
         rvFileName?.adapter = fileNameAdapter
         rvFileName?.layoutManager = LinearLayoutManager(this)
-        fileNameAdapter?.setData(
-            SPDataHelper.getSPFileNameItems(this), noDataInterface
-        )
 
         fileNameAdapter?.setOnClick(object : FileNameAdapter.OnClickInterface {
             override fun onClick(fileNameItem: FileNameItem) {
                 val newIntent = Intent(this@FileNameListActivity, FileContentActivity::class.java)
                 newIntent.putExtra(
-                    FileContentActivity.PARAM_FILE_NAME_NO_SUFFIX,
-                    fileNameItem.fileName
+                    FileContentActivity.PARAM_FILE_NAME_NO_SUFFIX, fileNameItem.fileName
                 )
                 startActivity(newIntent)
             }
@@ -59,29 +60,30 @@ class FileNameListActivity : AppCompatActivity() {
             @SuppressLint("NotifyDataSetChanged")
             override fun onLongClick(fileNameItem: FileNameItem) {
 
-                AlertDialog.Builder(this@FileNameListActivity)
-                    .setTitle("确认")
-                    .setMessage("确认要删除文件 ${fileNameItem.fileName} 吗？")
-                    .setNeutralButton(
+                AlertDialog.Builder(this@FileNameListActivity).setTitle("确认")
+                    .setMessage("确认要删除文件 ${fileNameItem.fileName} 吗？").setPositiveButton(
                         "确认"
                     ) { dialog, _ ->
-                        val isSuccess =
-                            SPDataHelper.deleteSPFile(
-                                this@FileNameListActivity,
-                                fileNameItem.fileName
-                            )
+                        val isSuccess = SPDataHelper.deleteSPFile(
+                            this@FileNameListActivity, fileNameItem.fileName
+                        )
                         val msg = if (isSuccess) "删除成功" else "删除失败"
-                        Toast.makeText(this@FileNameListActivity, msg, Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(this@FileNameListActivity, msg, Toast.LENGTH_SHORT).show()
                         dialog?.dismiss()
                         fileNameAdapter?.remove(fileNameItem, noDataInterface)
-                    }
-                    .setPositiveButton(
+                    }.setNeutralButton(
                         "取消"
                     ) { dialog, _ -> dialog?.dismiss() }.show()
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fileNameAdapter?.setData(
+            SPDataHelper.getSPFileNameItems(this), noDataInterface
+        )
     }
 
 
