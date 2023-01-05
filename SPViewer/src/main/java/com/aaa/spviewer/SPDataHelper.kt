@@ -1,5 +1,6 @@
 package com.aaa.spviewer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.aaa.spviewer.model.FileNameItem
@@ -16,36 +17,42 @@ object SPDataHelper {
     private const val SHARED_PREFS = "shared_prefs"
     private const val FILE_SUFFIX = ".xml"
 
+    @SuppressLint("ApplySharedPref")
     fun putBoolean(
         context: Context?, fileNameNoSuffix: String?, key: String, b: Boolean
     ) {
         getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putBoolean(key, b)?.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun putFloat(
         context: Context?, fileNameNoSuffix: String?, key: String, f: Float
     ) {
         getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putFloat(key, f)?.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun putInt(
         context: Context?, fileNameNoSuffix: String?, key: String, i: Int
     ) {
         getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putInt(key, i)?.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun putLong(
         context: Context?, fileNameNoSuffix: String?, key: String, l: Long
     ) {
         getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putLong(key, l)?.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun putString(
         context: Context?, fileNameNoSuffix: String?, key: String, s: String
     ) {
         getSharedPreferences(context, fileNameNoSuffix)?.edit()?.putString(key, s)?.commit()
     }
 
+    @SuppressLint("ApplySharedPref")
     fun removeKey(context: Context?, fileNameNoSuffix: String?, key: String) {
         getSharedPreferences(context, fileNameNoSuffix)?.edit()?.remove(key)?.commit()
     }
