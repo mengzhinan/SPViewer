@@ -143,4 +143,13 @@ object SPDataHelper {
         return true
     }
 
+    fun getSPFileContentKV(context: Context?, fileNameNoSuffix: String?): Map<String, String> {
+        val resultMap = mutableMapOf<String, String>()
+        val map: Map<String, *>? = getSharedPreferences(context, fileNameNoSuffix)?.all
+        map?.forEach() {
+            resultMap[it.key] = it.value.toString()
+        }
+        return resultMap
+    }
+
 }
