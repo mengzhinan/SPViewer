@@ -162,6 +162,20 @@ object SPDataHelper {
             val fileContentItem = FileContentItem()
             fileContentItem.key = it.key
             fileContentItem.value = it.value.toString()
+            val type = if (it.value is Int) {
+                FileContentItem.DATA_TYPE_INT
+            } else if (it.value is Long) {
+                FileContentItem.DATA_TYPE_LONG
+            } else if (it.value is Float {
+                FileContentItem.DATA_TYPE_FLOAT
+            } else if (it.value is Boolean) {
+                FileContentItem.DATA_TYPE_BOOLEAN
+            } else if (it.value is String) {
+                FileContentItem.DATA_TYPE_STRING
+            } else {
+                -1
+            }
+            fileContentItem.dataType = type
             resultList.add(fileContentItem)
         }
         return resultList
