@@ -58,6 +58,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
 
         tvKey?.text = fileContentKey
         tvValue?.text = fileContentValue
+        etValue?.setText(fileContentValue)
 
         updateStatus()
 
