@@ -112,11 +112,12 @@ class KeyValueDetailActivity : AppCompatActivity() {
         var msg = "保存成功"
         if (fileContentValueType == FileContentItem.DATA_TYPE_BOOLEAN) {
             try {
-                if (text.lowercase(Locale.getDefault()) != "true" && text.lowercase(Locale.getDefault()) != "false") {
+                val newText = text.lowercase(Locale.getDefault())
+                if (newText != "true" && newText != "false") {
                     throw IllegalArgumentException("$text can not parse to Boolean")
                 }
                 SPDataHelper.putBoolean(
-                    this, fileNameNoSuffix, fileContentKey ?: "", text.toBoolean()
+                    this, fileNameNoSuffix, fileContentKey ?: "", newText.toBoolean()
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
