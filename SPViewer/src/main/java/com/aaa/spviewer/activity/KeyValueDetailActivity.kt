@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.aaa.spviewer.R
 import com.aaa.spviewer.SPDataHelper
 import com.aaa.spviewer.model.FileContentItem
+import java.util.*
 
 class KeyValueDetailActivity : AppCompatActivity() {
 
@@ -111,6 +112,9 @@ class KeyValueDetailActivity : AppCompatActivity() {
         var msg = "保存成功"
         if (fileContentValueType == FileContentItem.DATA_TYPE_BOOLEAN) {
             try {
+                if (text.lowercase(Locale.getDefault()) != "true" && text.lowercase(Locale.getDefault()) != "false") {
+                    throw IllegalArgumentException("$text can not parse to Boolean")
+                }
                 SPDataHelper.putBoolean(
                     this, fileNameNoSuffix, fileContentKey ?: "", text.toBoolean()
                 )
