@@ -56,16 +56,16 @@ class KeyValueDetailActivity : AppCompatActivity() {
         tvValue = findViewById(R.id.tv_value)
         tvKey = findViewById(R.id.tv_key)
 
+        btnUpdate?.setOnClickListener {
+            isEdit = !isEdit
+            saveData()
+        }
+
         tvKey?.text = fileContentKey
         tvValue?.text = fileContentValue
         etValue?.setText(fileContentValue)
 
         updateStatus()
-
-        btnUpdate?.setOnClickListener {
-            isEdit = !isEdit
-            saveData()
-        }
     }
 
     private fun updateStatus() {
