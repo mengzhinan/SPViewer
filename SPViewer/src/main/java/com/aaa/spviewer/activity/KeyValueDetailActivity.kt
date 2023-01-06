@@ -1,6 +1,8 @@
 package com.aaa.spviewer.activity
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.aaa.spviewer.R
@@ -26,6 +28,8 @@ class KeyValueDetailActivity : AppCompatActivity() {
     // sp 文件中 key 对应的 value 的 type
     private var fileContentValueType: Int? = 0
 
+    private var btnUpdate: Button? = null
+    private var etValue: EditText? = null
     private var tvKey: TextView? = null
     private var tvValue: TextView? = null
 
@@ -40,6 +44,8 @@ class KeyValueDetailActivity : AppCompatActivity() {
 
         supportActionBar?.title = "$fileNameNoSuffix [key-value] 详情"
 
+        btnUpdate = findViewById(R.id.btn_update)
+        etValue = findViewById(R.id.et_value)
         tvKey = findViewById(R.id.tv_key)
         tvValue = findViewById(R.id.tv_value)
 
