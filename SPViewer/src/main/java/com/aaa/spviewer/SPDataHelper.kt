@@ -166,7 +166,7 @@ object SPDataHelper {
                 FileContentItem.DATA_TYPE_INT
             } else if (it.value is Long) {
                 FileContentItem.DATA_TYPE_LONG
-            } else if (it.value is Float {
+            } else if (it.value is Float) {
                 FileContentItem.DATA_TYPE_FLOAT
             } else if (it.value is Boolean) {
                 FileContentItem.DATA_TYPE_BOOLEAN
