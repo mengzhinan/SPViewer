@@ -88,7 +88,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
             return
         }
         val oldText = tvValue?.text?.toString() ?: ""
-        val newText = etValue?.text?.toString() ?: ""
+        var newText = etValue?.text?.toString() ?: ""
         if (newText == oldText) {
             Toast.makeText(this, "内容未更改，无需保存", Toast.LENGTH_SHORT).show()
             return
@@ -100,6 +100,10 @@ class KeyValueDetailActivity : AppCompatActivity() {
         val isSuccess = saveToSP(newText)
         if (isSuccess) {
             // 更新查看模式的值
+            if (fileContentValueType == FileContentItem.DATA_TYPE_BOOLEAN) {
+                newText = newText.lowercase(Locale.getDefault())
+                etValue?.setText(newText)
+            }
             tvValue?.text = newText
         } else {
             // 恢复编辑模式的值
