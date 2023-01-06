@@ -167,4 +167,28 @@ object SPDataHelper {
         return resultList
     }
 
+    /**
+     * 过滤等于 key，或者包含 value 的 key-value 值 list
+     */
+    fun searchKeyAndValue(
+        context: Context?, fileNameNoSuffix: String?, sKey: String?, sValue: String?
+    ): MutableList<FileContentItem> {
+        val oldList = getSPFileContents(context, fileNameNoSuffix)
+        val newList = mutableListOf<FileContentItem>()
+        val tKey = sKey?.trim() ?: ""
+        val tValue = sValue?.trim() ?: ""
+        if (tKey.isEmpty() && tValue.isEmpty()) {
+            // 无搜索的 key 和 value 时，返回全部 list
+            return oldList
+        }
+        oldList.forEach() {
+            if (tKey.isNotEmpty() && tKey == it.key) {
+                newList.add(it)
+            } else if (tValue.isNotEmpty() && (it.value ?: "").contains(tValue)) {
+                newList.add(it)
+            }
+        }
+        return newList
+    }
+
 }

@@ -3,7 +3,10 @@ package com.aaa.spviewer.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -24,6 +27,7 @@ class FileContentActivity : AppCompatActivity() {
     // sp 文件名称(不包含文件后缀名)
     private var fileNameNoSuffix: String? = null
 
+    private var btnSearch: Button? = null
     private var tvNoData: TextView? = null
     private var rvFileContent: RecyclerView? = null
     private var fileContentAdapter: FileContentAdapter? = null
@@ -41,6 +45,10 @@ class FileContentActivity : AppCompatActivity() {
         fileNameNoSuffix = intent?.getStringExtra(PARAM_FILE_NAME_NO_SUFFIX)
         supportActionBar?.title = "$fileNameNoSuffix 文件内容"
 
+        btnSearch = findViewById(R.id.btn_search)
+        btnSearch?.setOnClickListener {
+            search()
+        }
         tvNoData = findViewById(R.id.tv_no_data)
         rvFileContent = findViewById(R.id.rv_file_content)
 
@@ -97,6 +105,27 @@ class FileContentActivity : AppCompatActivity() {
         fileContentAdapter?.setData(
             SPDataHelper.getSPFileContents(this, fileNameNoSuffix), noDataInterface
         )
+    }
+
+    private fun search() {
+        val viewRoot = LayoutInflater.from(this).inflate(R.layout.layout_dialog_search, null)
+        val etSearchKey = viewRoot.findViewById<EditText>(R.id.et_search_key)
+        val etSearchValue = viewRoot.findViewById<EditText>(R.id.et_search_value)
+        AlertDialog.Builder(this@FileContentActivity).setTitle("搜索").setView(viewRoot)
+            .setPositiveButton(
+                "确认"
+            ) { dialog, _ ->
+                val sKey = etSearchKey.text.toString()
+                val sValue = etSearchValue.text.toString()
+                dialog?.dismiss()
+                fileContentAdapter?.setData(
+                    SPDataHelper.searchKeyAndValue(
+                        this, fileNameNoSuffix, sKey, sValue
+                    ), noDataInterface
+                )
+            }.setNeutralButton(
+                "取消"
+            ) { dialog, _ -> dialog?.dismiss() }.show()
     }
 
 }
