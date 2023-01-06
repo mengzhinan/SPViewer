@@ -81,6 +81,11 @@ class KeyValueDetailActivity : AppCompatActivity() {
     }
 
     private fun saveData() {
+        updateStatus()
+        if (isEdit) {
+            // 从「查看模式」切换到「编辑模式」，等待用户修改内容
+            return
+        }
         val oldText = tvValue?.text?.toString() ?: ""
         val newText = etValue?.text?.toString() ?: ""
         if (newText == oldText) {
@@ -95,7 +100,6 @@ class KeyValueDetailActivity : AppCompatActivity() {
         if (isSuccess) {
             tvValue?.text = newText
         }
-        updateStatus()
     }
 
     private fun saveToSP(text: String): Boolean {
