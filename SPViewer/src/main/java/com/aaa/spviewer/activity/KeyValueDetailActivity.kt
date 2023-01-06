@@ -33,7 +33,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
         fileContentKey = intent?.getStringExtra(PARAM_FILE_CONTENT_KEY)
         fileContentValue = intent?.getStringExtra(PARAM_FILE_CONTENT_VALUE)
 
-        supportActionBar?.title = "$fileNameNoSuffix key-value 详情"
+        supportActionBar?.title = "$fileNameNoSuffix [key-value] 详情"
 
         tvKey = findViewById(R.id.tv_key)
         tvValue = findViewById(R.id.tv_value)
