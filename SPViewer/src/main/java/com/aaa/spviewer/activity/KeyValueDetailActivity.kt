@@ -98,7 +98,11 @@ class KeyValueDetailActivity : AppCompatActivity() {
         }
         val isSuccess = saveToSP(newText)
         if (isSuccess) {
+            // 更新查看模式的值
             tvValue?.text = newText
+        } else {
+            // 恢复编辑模式的值
+            etValue?.setText(tvValue?.text?.toString())
         }
     }
 
