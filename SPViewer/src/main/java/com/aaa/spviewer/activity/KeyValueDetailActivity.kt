@@ -1,11 +1,15 @@
 package com.aaa.spviewer.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.aaa.spviewer.R
+import com.aaa.spviewer.SPDataHelper
+import com.aaa.spviewer.model.FileContentItem
 
 class KeyValueDetailActivity : AppCompatActivity() {
 
@@ -30,8 +34,11 @@ class KeyValueDetailActivity : AppCompatActivity() {
 
     private var btnUpdate: Button? = null
     private var etValue: EditText? = null
-    private var tvKey: TextView? = null
     private var tvValue: TextView? = null
+    private var tvKey: TextView? = null
+
+    // 当前处于什么模式(编辑、查看)
+    private var isEdit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +53,110 @@ class KeyValueDetailActivity : AppCompatActivity() {
 
         btnUpdate = findViewById(R.id.btn_update)
         etValue = findViewById(R.id.et_value)
-        tvKey = findViewById(R.id.tv_key)
         tvValue = findViewById(R.id.tv_value)
+        tvKey = findViewById(R.id.tv_key)
 
         tvKey?.text = fileContentKey
         tvValue?.text = fileContentValue
+
+        updateStatus()
+
+        btnUpdate?.setOnClickListener {
+            isEdit = !isEdit
+            saveData()
+        }
     }
+
+    private fun updateStatus() {
+        if (isEdit) {
+            btnUpdate?.text = "保存"
+            etValue?.visibility = View.VISIBLE
+            tvValue?.visibility = View.GONE
+        } else {
+            btnUpdate?.text = "修改"
+            etValue?.visibility = View.GONE
+            tvValue?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun saveData() {
+        val oldText = tvValue?.text?.toString() ?: ""
+        val newText = etValue?.text?.toString() ?: ""
+        if (newText == oldText) {
+            Toast.makeText(this, "内容未更改，无需保存", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (newText == "") {
+            Toast.makeText(this, "内容不能为空", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val isSuccess = saveToSP(newText)
+        if (isSuccess) {
+            tvValue?.text = newText
+        }
+        updateStatus()
+    }
+
+    private fun saveToSP(text: String): Boolean {
+        var isSuccess = true
+        var msg = "保存成功"
+        if (fileContentValueType == FileContentItem.DATA_TYPE_BOOLEAN) {
+            try {
+                SPDataHelper.putBoolean(
+                    this, fileNameNoSuffix, fileContentKey ?: "", text.toBoolean()
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                msg = "保存失败，${e.message}"
+                isSuccess = false
+            }
+        } else if (fileContentValueType == FileContentItem.DATA_TYPE_FLOAT) {
+            try {
+                SPDataHelper.putFloat(
+                    this, fileNameNoSuffix, fileContentKey ?: "", text.toFloat()
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                msg = "保存失败，${e.message}"
+                isSuccess = false
+            }
+        } else if (fileContentValueType == FileContentItem.DATA_TYPE_INT) {
+            try {
+                SPDataHelper.putInt(
+                    this, fileNameNoSuffix, fileContentKey ?: "", text.toInt()
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                msg = "保存失败，${e.message}"
+                isSuccess = false
+            }
+        } else if (fileContentValueType == FileContentItem.DATA_TYPE_LONG) {
+            try {
+                SPDataHelper.putLong(
+                    this, fileNameNoSuffix, fileContentKey ?: "", text.toLong()
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                msg = "保存失败，${e.message}"
+                isSuccess = false
+            }
+        } else if (fileContentValueType == FileContentItem.DATA_TYPE_STRING) {
+            try {
+                SPDataHelper.putString(
+                    this, fileNameNoSuffix, fileContentKey ?: "", text
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                msg = "保存失败，${e.message}"
+                isSuccess = false
+            }
+        } else {
+            msg = "保存失败，不确定应该保存为什么数据类型"
+            isSuccess = false
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        return isSuccess
+    }
+
+
 }
