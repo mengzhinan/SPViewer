@@ -74,6 +74,9 @@ class FileContentActivity : AppCompatActivity() {
                 newIntent.putExtra(
                     KeyValueDetailActivity.PARAM_FILE_CONTENT_VALUE, fileContentItem.value
                 )
+                newIntent.putExtra(
+                    KeyValueDetailActivity.PARAM_FILE_CONTENT_VALUE_TYPE, fileContentItem.dataType
+                )
                 startActivity(newIntent)
             }
         })

@@ -11,6 +11,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
         const val PARAM_FILE_NAME_NO_SUFFIX = "param_file_name_no_suffix"
         const val PARAM_FILE_CONTENT_KEY = "param_file_content_key"
         const val PARAM_FILE_CONTENT_VALUE = "param_file_content_value"
+        const val PARAM_FILE_CONTENT_VALUE_TYPE = "param_file_content_value_type"
     }
 
     // sp 文件名称(不包含文件后缀名)
@@ -22,6 +23,9 @@ class KeyValueDetailActivity : AppCompatActivity() {
     // sp 文件中 key 对应的 value
     private var fileContentValue: String? = null
 
+    // sp 文件中 key 对应的 value 的 type
+    private var fileContentValueType: Int? = 0
+
     private var tvKey: TextView? = null
     private var tvValue: TextView? = null
 
@@ -32,6 +36,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
         fileNameNoSuffix = intent?.getStringExtra(PARAM_FILE_NAME_NO_SUFFIX)
         fileContentKey = intent?.getStringExtra(PARAM_FILE_CONTENT_KEY)
         fileContentValue = intent?.getStringExtra(PARAM_FILE_CONTENT_VALUE)
+        fileContentValueType = intent?.getIntExtra(PARAM_FILE_CONTENT_VALUE_TYPE, 0)
 
         supportActionBar?.title = "$fileNameNoSuffix [key-value] 详情"
 
