@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="50dp">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#80CCCCCC"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tv_file_name"
         android:layout_width="match_parent"
@@ -26,9 +32,4 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="文件大小" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="#80CCCCCC"
-        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
