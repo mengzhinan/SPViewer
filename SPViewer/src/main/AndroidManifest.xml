@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".activity.KeyValueActivity"
+            android:name=".activity.KeyValueDetailActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

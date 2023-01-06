@@ -3,6 +3,7 @@ package com.aaa.spviewer
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import com.aaa.spviewer.model.FileContentItem
 import com.aaa.spviewer.model.FileNameItem
 import java.io.File
 
@@ -53,8 +54,14 @@ object SPDataHelper {
     }
 
     @SuppressLint("ApplySharedPref")
-    fun removeKey(context: Context?, fileNameNoSuffix: String?, key: String) {
-        getSharedPreferences(context, fileNameNoSuffix)?.edit()?.remove(key)?.commit()
+    fun removeKey(context: Context?, fileNameNoSuffix: String?, key: String?): Boolean {
+        return try {
+            getSharedPreferences(context, fileNameNoSuffix)?.edit()?.remove(key)?.commit()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
 //    @Deprecated(
@@ -143,13 +150,21 @@ object SPDataHelper {
         return true
     }
 
-    fun getSPFileContentKV(context: Context?, fileNameNoSuffix: String?): Map<String, String> {
-        val resultMap = mutableMapOf<String, String>()
+    /**
+     * 获取 sp 文件中的 key-value 集合 list
+     */
+    fun getSPFileContents(
+        context: Context?, fileNameNoSuffix: String?
+    ): MutableList<FileContentItem> {
+        val resultList = mutableListOf<FileContentItem>()
         val map: Map<String, *>? = getSharedPreferences(context, fileNameNoSuffix)?.all
         map?.forEach() {
-            resultMap[it.key] = it.value.toString()
+            val fileContentItem = FileContentItem()
+            fileContentItem.key = it.key
+            fileContentItem.value = it.value.toString()
+            resultList.add(fileContentItem)
         }
-        return resultMap
+        return resultList
     }
 
 }

@@ -25,7 +25,6 @@ class FileNameListActivity : AppCompatActivity() {
         override fun hasData(hasData: Boolean) {
             tvNoData?.visibility = if (hasData) View.GONE else View.VISIBLE
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,6 +84,5 @@ class FileNameListActivity : AppCompatActivity() {
             SPDataHelper.getSPFileNameItems(this), noDataInterface
         )
     }
-
 
 }
