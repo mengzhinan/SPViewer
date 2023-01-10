@@ -12,10 +12,12 @@ import com.aaa.spviewer.R
  */
 class FileContentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var tvKey: TextView
+    var tvType: TextView
     var tvValue: TextView
 
     init {
         tvKey = itemView.findViewById(R.id.tv_key)
+        tvType = itemView.findViewById(R.id.tv_type)
         tvValue = itemView.findViewById(R.id.tv_value)
     }
 }

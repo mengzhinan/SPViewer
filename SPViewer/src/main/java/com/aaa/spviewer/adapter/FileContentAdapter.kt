@@ -51,6 +51,7 @@ class FileContentAdapter : RecyclerView.Adapter<FileContentViewHolder>() {
     override fun onBindViewHolder(holder: FileContentViewHolder, position: Int) {
         val fileContentItem = list[position]
         holder.tvKey.text = fileContentItem.key
+        holder.tvType.text = fileContentItem.dataTypeString
         holder.tvValue.text = fileContentItem.value
         holder.itemView.setOnClickListener {
             onClickInterface?.onClick(fileContentItem)

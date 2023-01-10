@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.aaa.spviewer.R
 import com.aaa.spviewer.SPDataHelper
-import com.aaa.spviewer.model.FileContentItem
 import java.util.*
 
 class KeyValueDetailActivity : AppCompatActivity() {
@@ -30,8 +29,8 @@ class KeyValueDetailActivity : AppCompatActivity() {
     // sp 文件中 key 对应的 value
     private var fileContentValue: String? = null
 
-    // sp 文件中 key 对应的 value 的 type
-    private var fileContentValueType: Int? = 0
+    // sp 文件中 key 对应的 value 的 type 类型名称
+    private var fileContentValueDataType: String? = ""
 
     private var btnUpdate: Button? = null
     private var etValue: EditText? = null
@@ -48,7 +47,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
         fileNameNoSuffix = intent?.getStringExtra(PARAM_FILE_NAME_NO_SUFFIX)
         fileContentKey = intent?.getStringExtra(PARAM_FILE_CONTENT_KEY)
         fileContentValue = intent?.getStringExtra(PARAM_FILE_CONTENT_VALUE)
-        fileContentValueType = intent?.getIntExtra(PARAM_FILE_CONTENT_VALUE_TYPE, 0)
+        fileContentValueDataType = intent?.getStringExtra(PARAM_FILE_CONTENT_VALUE_TYPE)
 
         supportActionBar?.title = "$fileNameNoSuffix [key-value] 详情"
 
@@ -100,7 +99,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
         val isSuccess = saveToSP(newText)
         if (isSuccess) {
             // 更新查看模式的值
-            if (fileContentValueType == FileContentItem.DATA_TYPE_BOOLEAN) {
+            if (fileContentValueDataType == SPDataHelper.DATA_TYPE_BOOLEAN_STRING) {
                 newText = newText.lowercase(Locale.getDefault())
                 etValue?.setText(newText)
             }
@@ -114,7 +113,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
     private fun saveToSP(text: String): Boolean {
         var isSuccess = true
         var msg = "保存成功"
-        if (fileContentValueType == FileContentItem.DATA_TYPE_BOOLEAN) {
+        if (fileContentValueDataType == SPDataHelper.DATA_TYPE_BOOLEAN_STRING) {
             try {
                 val newText = text.lowercase(Locale.getDefault())
                 if (newText != "true" && newText != "false") {
@@ -128,7 +127,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
                 msg = "保存失败，${e.message}"
                 isSuccess = false
             }
-        } else if (fileContentValueType == FileContentItem.DATA_TYPE_FLOAT) {
+        } else if (fileContentValueDataType == SPDataHelper.DATA_TYPE_FLOAT_STRING) {
             try {
                 SPDataHelper.putFloat(
                     this, fileNameNoSuffix, fileContentKey ?: "", text.toFloat()
@@ -138,7 +137,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
                 msg = "保存失败，${e.message}"
                 isSuccess = false
             }
-        } else if (fileContentValueType == FileContentItem.DATA_TYPE_INT) {
+        } else if (fileContentValueDataType == SPDataHelper.DATA_TYPE_INT_STRING) {
             try {
                 SPDataHelper.putInt(
                     this, fileNameNoSuffix, fileContentKey ?: "", text.toInt()
@@ -148,7 +147,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
                 msg = "保存失败，${e.message}"
                 isSuccess = false
             }
-        } else if (fileContentValueType == FileContentItem.DATA_TYPE_LONG) {
+        } else if (fileContentValueDataType == SPDataHelper.DATA_TYPE_LONG_STRING) {
             try {
                 SPDataHelper.putLong(
                     this, fileNameNoSuffix, fileContentKey ?: "", text.toLong()
@@ -158,7 +157,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
                 msg = "保存失败，${e.message}"
                 isSuccess = false
             }
-        } else if (fileContentValueType == FileContentItem.DATA_TYPE_STRING) {
+        } else if (fileContentValueDataType == SPDataHelper.DATA_TYPE_STRING_STRING) {
             try {
                 SPDataHelper.putString(
                     this, fileNameNoSuffix, fileContentKey ?: "", text

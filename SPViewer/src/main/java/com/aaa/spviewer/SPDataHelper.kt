@@ -18,6 +18,41 @@ object SPDataHelper {
     private const val SHARED_PREFS = "shared_prefs"
     private const val FILE_SUFFIX = ".xml"
 
+    const val DATA_TYPE_BOOLEAN_STRING = "Boolean"
+    const val DATA_TYPE_FLOAT_STRING = "Float"
+    const val DATA_TYPE_INT_STRING = "Int"
+    const val DATA_TYPE_LONG_STRING = "Long"
+    const val DATA_TYPE_STRING_STRING = "String"
+
+    /**
+     * 获取 sp 值类型类名
+     * 如： float -> "Float"
+     */
+    private fun getDataTypeString(
+        data: Any?, typeDefault: String = DATA_TYPE_STRING_STRING
+    ): String {
+        return when (data) {
+            is Int -> {
+                DATA_TYPE_INT_STRING
+            }
+            is Long -> {
+                DATA_TYPE_LONG_STRING
+            }
+            is Float -> {
+                DATA_TYPE_FLOAT_STRING
+            }
+            is Boolean -> {
+                DATA_TYPE_BOOLEAN_STRING
+            }
+            is String -> {
+                DATA_TYPE_STRING_STRING
+            }
+            else -> {
+                typeDefault
+            }
+        }
+    }
+
     @SuppressLint("ApplySharedPref")
     fun putBoolean(
         context: Context?, fileNameNoSuffix: String?, key: String, b: Boolean
@@ -162,20 +197,7 @@ object SPDataHelper {
             val fileContentItem = FileContentItem()
             fileContentItem.key = it.key
             fileContentItem.value = it.value.toString()
-            val type = if (it.value is Int) {
-                FileContentItem.DATA_TYPE_INT
-            } else if (it.value is Long) {
-                FileContentItem.DATA_TYPE_LONG
-            } else if (it.value is Float) {
-                FileContentItem.DATA_TYPE_FLOAT
-            } else if (it.value is Boolean) {
-                FileContentItem.DATA_TYPE_BOOLEAN
-            } else if (it.value is String) {
-                FileContentItem.DATA_TYPE_STRING
-            } else {
-                -1
-            }
-            fileContentItem.dataType = type
+            fileContentItem.dataTypeString = getDataTypeString(it.value)
             resultList.add(fileContentItem)
         }
         return resultList
