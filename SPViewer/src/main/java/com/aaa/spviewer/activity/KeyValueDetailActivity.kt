@@ -1,7 +1,9 @@
 package com.aaa.spviewer.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -108,6 +110,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
             // 恢复编辑模式的值
             etValue?.setText(tvValue?.text?.toString())
         }
+        hideKeyboard(this, etValue)
     }
 
     private fun saveToSP(text: String): Boolean {
@@ -175,5 +178,11 @@ class KeyValueDetailActivity : AppCompatActivity() {
         return isSuccess
     }
 
+    private fun hideKeyboard(context: Context, v: View?) {
+        val imm: InputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager ?: return
+        imm.hideSoftInputFromWindow(v?.windowToken, 0)
+
+    }
 
 }
