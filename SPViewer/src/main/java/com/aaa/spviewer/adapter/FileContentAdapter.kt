@@ -48,10 +48,19 @@ class FileContentAdapter : RecyclerView.Adapter<FileContentViewHolder>() {
         )
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: FileContentViewHolder, position: Int) {
         val fileContentItem = list[position]
         holder.tvKey.text = fileContentItem.key
-        holder.tvType.text = fileContentItem.dataTypeString
+
+        val dataSizeOfStringLength = fileContentItem.dataSizeOfString.trim().length
+        val typeAndSize = if (dataSizeOfStringLength > 0) {
+            "${fileContentItem.dataTypeString} - ${fileContentItem.dataSizeOfString}"
+        } else {
+            fileContentItem.dataTypeString
+        }
+        holder.tvType.text = typeAndSize
+
         holder.tvValue.text = fileContentItem.value
         holder.itemView.setOnClickListener {
             onClickInterface?.onClick(fileContentItem)

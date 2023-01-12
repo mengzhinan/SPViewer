@@ -53,6 +53,22 @@ object SPDataHelper {
         }
     }
 
+    /**
+     * 计算字符串类型的字节长度
+     */
+    private fun getStringValueSize(v: String?, dataTypeString: String?): String {
+        if (v?.trim()?.length == 0 || dataTypeString?.trim()?.length == 0) {
+            return ""
+        }
+        if (dataTypeString != DATA_TYPE_STRING_STRING) {
+            // 不是 String 类型的，不用计算大小了
+            return ""
+        }
+        val l = v?.toByteArray()?.size?.toLong()
+        return FileSizeUtil.formatFileSize(l)
+
+    }
+
     @SuppressLint("ApplySharedPref")
     fun putBoolean(
         context: Context?, fileNameNoSuffix: String?, key: String, b: Boolean
@@ -198,6 +214,8 @@ object SPDataHelper {
             fileContentItem.key = it.key
             fileContentItem.value = it.value.toString()
             fileContentItem.dataTypeString = getDataTypeString(it.value)
+            fileContentItem.dataSizeOfString =
+                getStringValueSize(fileContentItem.value, fileContentItem.dataTypeString)
             resultList.add(fileContentItem)
         }
         return resultList

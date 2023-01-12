@@ -10,5 +10,6 @@ class FileContentItem {
     var key: String? = null
     var value: String? = null
     var dataTypeString: String = ""
+    var dataSizeOfString: String = ""
 
 }
