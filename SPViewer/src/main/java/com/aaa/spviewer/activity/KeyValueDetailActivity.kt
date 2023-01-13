@@ -88,6 +88,7 @@ class KeyValueDetailActivity : AppCompatActivity() {
             // 从「查看模式」切换到「编辑模式」，等待用户修改内容
             return
         }
+        hideKeyboard(this, etValue)
         val oldText = tvValue?.text?.toString() ?: ""
         var newText = etValue?.text?.toString() ?: ""
         if (newText == oldText) {
@@ -110,7 +111,6 @@ class KeyValueDetailActivity : AppCompatActivity() {
             // 恢复编辑模式的值
             etValue?.setText(tvValue?.text?.toString())
         }
-        hideKeyboard(this, etValue)
     }
 
     private fun saveToSP(text: String): Boolean {
